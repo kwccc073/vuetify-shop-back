@@ -3,6 +3,7 @@ import validator from 'validator'
 import bcrypt from 'bcrypt'
 import UserRole from '../enums/UserRole.js'
 
+// 購物車-----------------------------------------------------------------------
 const cartSchema = Schema({
   p_id: {
     type: ObjectId,
@@ -16,6 +17,7 @@ const cartSchema = Schema({
   }
 })
 
+// 使用者-----------------------------------------------------------------------
 const schema = new Schema({
   // 使用者帳號
   account: {
@@ -23,9 +25,12 @@ const schema = new Schema({
     required: [true, '使用者帳號必填'],
     minlength: [4, '使用者帳號長度不符'],
     maxlength: [20, '使用者帳號長度不符'],
+    // 不可重複
     unique: true,
+    // 驗證
     validate: {
       validator (value) {
+        // 使用套件 validator
         return validator.isAlphanumeric(value)
       },
       message: '使用者帳號格式錯誤'
@@ -49,18 +54,23 @@ const schema = new Schema({
     }
   },
   tokens: {
-    type: [String]
+    type: [String] // 文字陣列
   },
   cart: {
-    type: [cartSchema]
+    type: [cartSchema] // 上方的購物車Schema
   },
+  // 區分這個人是一般使用者還是管理員
   role: {
-    // 資料型態為數字，預設值為檔案UserRole裡的USER
+    // 資料型態為數字
     type: Number,
+    // 若只寫數字很容易搞不清楚數字代表的值，因此創建資料夾enums的檔案 UserRole
+    // 引入檔案 UserRole，預設值為此檔案中的USER
     default: UserRole.USER
   }
 }, {
+  // 資料庫中建立一個欄位為使用者帳號建立時間
   timestamps: true,
+  // 關閉資料改了幾次的紀錄
   versionKey: false
 })
 
