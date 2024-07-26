@@ -1,4 +1,4 @@
-// 套件
+// 引入套件
 import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
@@ -6,11 +6,13 @@ import cors from 'cors'
 import { StatusCodes } from 'http-status-codes'
 import mongoSanitize from 'express-mongo-sanitize'
 import rateLimit from 'express-rate-limit'
+// 引入routes中的檔案
 import routeUser from './routes/user.js'
 import routeProduct from './routes/product.js'
 import routeOrder from './routes/order.js'
 import './passport/passport.js'
 
+// 建立express伺服器
 const app = express()
 
 // 一段時間內操作太多次請求會被封ip
@@ -52,7 +54,11 @@ app.use(cors({
 .use() 是 Express.js 中的一個方法，用於將中間件函數掛載到應用程序的路徑上。中間件函數是一組可以訪問請求對象（req）、響應對象（res）和應用程序的請求-響應循環中間的 next 中間件函數的函數。
 通過使用 .use()，可以將自定義中間件或內建中間件應用到應用程序的路徑上，從而實現各種功能，如請求解析、驗證、日誌記錄等。
 */
+
+// 把請求的資料解析成json
 app.use(express.json())
+// 解析時有可能錯誤，因此要寫錯誤處理的function
+// _原本是error，但這裡有錯誤也不能處理所以寫_
 app.use((_, req, res, next) => {
   res.status(StatusCodes.BAD_REQUEST).json({
     success: false,
@@ -62,7 +68,9 @@ app.use((_, req, res, next) => {
 // 一定要在express.json()之後
 app.use(mongoSanitize())
 
-// 路由
+// index.js中請求太多會很雜很亂，因此可建立用路由來進行分類
+// 所有進到 /user 路徑的請求都交給 routeUser 處理
+// 最終路徑為http://localhost:4000/user/routeUser裡的路徑
 app.use('/user', routeUser)
 app.use('/product', routeProduct)
 app.use('/order', routeOrder)

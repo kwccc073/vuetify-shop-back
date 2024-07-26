@@ -1,4 +1,4 @@
-import { Schema, model, ObjectId } from 'mongoose'
+import { Schema, model, ObjectId, Error } from 'mongoose'
 import validator from 'validator'
 import bcrypt from 'bcrypt'
 import UserRole from '../enums/UserRole.js'
@@ -75,16 +75,20 @@ const schema = new Schema({
 })
 
 // schema.pre() 是 Mongoose 中的一個方法，用於在某些操作（如保存、刪除、更新等）發生之前執行預處理邏輯
-// save表示在被保存之前執行
+// save表示在被保存之前要執行的動作
+// 密碼加密
 schema.pre('save', function (next) {
   const user = this
+  // 如果有修改密碼
   if (user.isModified('password')) {
+    // 檢查長度是否超出限制範圍
     if (user.password.length < 4 || user.password.length > 20) {
       const error = new Error.ValidationError()
       error.addError('password', new Error.ValidatorError({ message: '使用者密碼長度不符' }))
       next(error) // 如果有錯誤，將錯誤傳遞給 next()
       return
     } else {
+      // 加密
       user.password = bcrypt.hashSync(user.password, 10)
     }
   }
@@ -93,12 +97,17 @@ schema.pre('save', function (next) {
   next()
 })
 
+// virtual是建立虛擬的欄位，來顯示購物車右上角的數量
+// .get()是寫產生的方式
 schema.virtual('cartQuantity').get(function () {
-  const user = this // 現在這筆的使用者資料
-  // 購物車累加把所有數量加起來
+  const user = this // 現在這筆的使用者資料，要用this就不能用箭頭函式
+  // .reduce()是JS陣列的方法，將陣列中的每個元素依次執行函式，並將其結果累積為單個值
   return user.cart.reduce((total, current) => {
+    // 累加的總數量+現在的數量
     return total + current.quantity
-  }, 0)
+  },
+  0 // 表示初始值
+  )
 })
 
 export default model('users', schema)
