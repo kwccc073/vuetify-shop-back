@@ -2,6 +2,7 @@
 import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
+// 引入套件（連接後端）
 import cors from 'cors'
 import { StatusCodes } from 'http-status-codes'
 // 引入資安功能套件
@@ -42,11 +43,14 @@ app.use(cors({
   // origin = 請求的來源
   // callback(錯誤, 是否允許)
   origin (origin, callback) {
+    // undefined表示請求是從後端傳送過來，例如postman
     if (origin === undefined ||
       origin.includes('github.io') || origin.includes('localhost') || origin.includes('127.0.0.1')
     ) {
+      // 符合上面的話就讓它過
       callback(null, true)
     } else {
+      // 不符合的話不讓他過且回傳錯誤
       callback(new Error('CORS'), false)
     }
   }
