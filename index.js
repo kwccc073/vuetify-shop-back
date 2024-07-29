@@ -4,6 +4,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import { StatusCodes } from 'http-status-codes'
+// 引入資安功能套件
 import mongoSanitize from 'express-mongo-sanitize'
 import rateLimit from 'express-rate-limit'
 // 引入routes中的檔案
@@ -15,6 +16,7 @@ import './passport/passport.js'
 // 建立express伺服器
 const app = express()
 
+// 放第一個，若超出上限就不用處理進來的東西
 // 一段時間內操作太多次請求會被封ip
 // 套件express-rate-limit，參考網站 https://www.npmjs.com/package/express-rate-limit
 app.use(rateLimit({
@@ -25,7 +27,7 @@ app.use(rateLimit({
   statusCode: StatusCodes.TOO_MANY_REQUESTS, // 自訂狀態碼
   message: '太多請求', // 超過上限回應的東西
   // 超出限制時，要如何做後續處理，共四個參數可以用
-  // options為上面東西的設定值
+  // options為上面這些設定值
   handler (req, res, next, options) {
     res.status(options.statusCode).json({
       success: false,
@@ -65,8 +67,8 @@ app.use((_, req, res, next) => {
     message: '資料格式錯誤'
   })
 })
-// 一定要在express.json()之後
-app.use(mongoSanitize())
+// 一定要在express.json()之後，req才不會是空的
+app.use(mongoSanitize()) // 資安功能
 
 // index.js中請求太多會很雜很亂，因此可建立用路由來進行分類
 // 所有進到 /user 路徑的請求都交給 routeUser 處理

@@ -13,7 +13,9 @@ export const create = async (req, res) => {
     })
   } catch (error) {
     if (error.name === 'ValidationError') {
+      // 先取出錯誤的第一個東西
       const key = Object.keys(error.errors)[0]
+      // 再取錯誤訊息
       const message = error.errors[key].message
       res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
