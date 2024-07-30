@@ -2,9 +2,11 @@ import Product from '../models/product.js'
 import { StatusCodes } from 'http-status-codes'
 import validator from 'validator'
 
+// 建立產品的function-----------------------------------------
 export const create = async (req, res) => {
   try {
     req.body.image = req.file.path
+    // .create()是monogoose內建的，用來創建並保存一個新的文檔到資料庫。
     const result = await Product.create(req.body)
     res.status(StatusCodes.OK).json({
       success: true,

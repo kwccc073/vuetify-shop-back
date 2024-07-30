@@ -1,11 +1,12 @@
 import { Router } from 'express'
 import * as auth from '../middlewares/auth.js'
 import upload from '../middlewares/upload.js'
-import admin from '../middlewares/admin.js'
+import admin from '../middlewares/admin.js' // 只有管理員可以經過的middlewares
 import { create, getAll, edit, get, getId } from '../controllers/product.js'
 
 const router = Router()
-
+// auth.jwt：判斷是哪位使用者
+// admin：判斷是否為管理員
 router.post('/', auth.jwt, admin, upload, create)
 router.get('/', get)
 // all一定要在id前面，不然會被當作id

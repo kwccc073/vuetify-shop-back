@@ -1,7 +1,7 @@
-import multer from 'multer'
-import { v2 as cloudinary } from 'cloudinary'
-import { CloudinaryStorage } from 'multer-storage-cloudinary'
-import { StatusCodes } from 'http-status-codes'
+import multer from 'multer' // 處理檔案上傳
+import { v2 as cloudinary } from 'cloudinary' // 雲端
+import { CloudinaryStorage } from 'multer-storage-cloudinary' // 將檔案上傳至雲端
+import { StatusCodes } from 'http-status-codes' // 狀態碼
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -24,6 +24,7 @@ const upload = multer({
 })
 
 export default (req, res, next) => {
+  // 只傳一個圖片
   upload.single('image')(req, res, error => {
     if (error instanceof multer.MulterError) {
       let message = '上傳錯誤'
@@ -47,7 +48,7 @@ export default (req, res, next) => {
         })
       }
     } else {
-      next()
+      next() // 進到下一步
     }
   })
 }

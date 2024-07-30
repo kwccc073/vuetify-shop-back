@@ -1,6 +1,6 @@
 // 引入套件
 import 'dotenv/config'
-import express from 'express'
+import express from 'express' // .use()是其內建函數
 import mongoose from 'mongoose'
 // 引入套件（連接後端）
 import cors from 'cors'

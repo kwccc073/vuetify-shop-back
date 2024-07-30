@@ -1,6 +1,7 @@
 // 登入---------------------------------------------------------------------------------------------
 // 引入登入認證用的套件
 import passport from 'passport'
+// 引入驗證策略
 import passportLocal from 'passport-local'
 import passportJWT from 'passport-jwt'
 // 引入加密用套件
