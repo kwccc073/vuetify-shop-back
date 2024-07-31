@@ -7,15 +7,22 @@ export const create = async (req, res) => {
   try {
     req.body.image = req.file.path
     // .create()是monogoose內建的，用來創建並保存一個新的文檔到資料庫。
+    // req.body是來自客戶端的請求數據 (通常是表單數據或 JSON檔 )，它包含model所需的所有項目。
     const result = await Product.create(req.body)
+    // 向客戶端發送一個 HTTP 回應，回應包含了 JSON 格式的數據
     res.status(StatusCodes.OK).json({
+      // 操作是否成功
       success: true,
-      message: '',
+      // 額外的說明
+      message: '新增成功',
+      // 是上面的 Product.create(req.body)
       result
     })
   } catch (error) {
     if (error.name === 'ValidationError') {
+      // 先取出錯誤的第一個東西
       const key = Object.keys(error.errors)[0]
+      // 再取錯誤訊息
       const message = error.errors[key].message
       res.status(StatusCodes.BAD_REQUEST).json({
         success: false,

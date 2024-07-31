@@ -114,6 +114,7 @@ export const logout = async (req, res) => {
     req.user.tokens = req.user.tokens.filter(token => token !== req.token)
     await req.user.save() // 保存
     res.status(StatusCodes.OK).json({
+      // 顯示在response
       success: true,
       message: ''
     })

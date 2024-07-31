@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as auth from '../middlewares/auth.js'
-import upload from '../middlewares/upload.js'
+import upload from '../middlewares/upload.js' // 照片上傳用
 import admin from '../middlewares/admin.js' // 只有管理員可以經過的middlewares
 import { create, getAll, edit, get, getId } from '../controllers/product.js'
 

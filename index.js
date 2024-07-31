@@ -2,9 +2,8 @@
 import 'dotenv/config'
 import express from 'express' // .use()是其內建函數
 import mongoose from 'mongoose'
-// 引入套件（連接後端）
-import cors from 'cors'
-import { StatusCodes } from 'http-status-codes'
+import cors from 'cors' // 連接前後端
+import { StatusCodes } from 'http-status-codes' // 狀態碼
 // 引入資安功能套件
 import mongoSanitize from 'express-mongo-sanitize'
 import rateLimit from 'express-rate-limit'
