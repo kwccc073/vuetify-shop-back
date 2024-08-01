@@ -73,7 +73,7 @@ app.use((_, req, res, next) => {
 // 一定要在express.json()之後，req才不會是空的
 app.use(mongoSanitize()) // 資安功能
 
-// index.js中請求太多會很雜很亂，因此可建立用路由來進行分類
+// 使用路由---------------------------------------------------
 // 所有進到 /user 路徑的請求都交給 routeUser 處理
 // 最終路徑為http://localhost:4000/user/routeUser裡的路徑
 app.use('/user', routeUser)

@@ -12,6 +12,7 @@ export const create = async (req, res) => {
       message: ''
     })
   } catch (error) {
+    // 驗證錯誤
     if (error.name === 'ValidationError') {
       // 先取出錯誤的第一個東西
       const key = Object.keys(error.errors)[0]
