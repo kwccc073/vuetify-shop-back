@@ -127,25 +127,34 @@ export const logout = async (req, res) => {
   }
 }
 
+// 購物車-----------------------------------------------------------------------------------
+// 編輯購物車--------------------------------------
+// 一次會回傳兩個東西進來：要加入的商品 id 及數量（相對值，後端去修改）
 export const editCart = async (req, res) => {
   try {
+    // 先檢查傳入的商品 id 對不對
     if (!validator.isMongoId(req.body.product)) throw new Error('ID')
 
+    // 尋找購物車內是否有傳入的這個商品id：若有 => 改數量、沒有 => 新增
+    // 這個req會包含使用者的資訊
     const idx = req.user.cart.findIndex(item => item.p_id.toString() === req.body.product)
+    // idx > -1表示購物車內有這個商品
     if (idx > -1) {
-      // 購物車內有這個商品，檢查修改後的數量
+      // 原本購物車內的數量 + 傳入的數量
       const quantity = req.user.cart[idx].quantity + parseInt(req.body.quantity)
       if (quantity <= 0) {
-        // 修改後小於等於 0，刪除
+        // 修改後的數量 <= 0，刪除此商品
+        // splice(idx, 1)表示從索引刪除一個
         req.user.cart.splice(idx, 1)
       } else {
-        // 修改後還有，修改
+        // 如果數量還有的話，就調整數量
         req.user.cart[idx].quantity = quantity
       }
     } else {
-      // 購物車內沒這個商品，檢查商品是否存在
-      const product = await Product.findById(req.body.product).orFail(new Error('NOT FOUND'))
-      if (!product.sell) throw new Error('SELL')
+      // 如果購物車內沒這個商品
+      // 檢查這個商品是否存在
+      const product = await Product.findById(req.body.product).orFail(new Error('NOT FOUND')) // 沒有找到的話就丟出錯誤'NOT FOUND'
+      if (!product.sell) throw new Error('SELL') // 如果下架了就丟出錯誤'SELL'
 
       req.user.cart.push({
         p_id: product._id,
@@ -153,10 +162,10 @@ export const editCart = async (req, res) => {
       })
     }
 
-    await req.user.save()
+    await req.user.save() // 保存
     res.status(StatusCodes.OK).json({
       success: true,
-      message: '',
+      message: '編輯購物車成功-controller',
       result: req.user.cartQuantity
     })
   } catch (error) {
@@ -191,6 +200,7 @@ export const editCart = async (req, res) => {
   }
 }
 
+// 取得購物車（一次取出來回給前端）-----------------------------------
 export const getCart = async (req, res) => {
   try {
     const result = await User.findById(req.user._id, 'cart').populate('cart.p_id')

@@ -38,7 +38,7 @@ export const create = async (req, res) => {
   }
 }
 
-// 取得全部商品資料-------------------------------------------------------------
+// 取得全部商品資料 for 管理員-------------------------------------------------------------
 export const getAll = async (req, res) => {
   try {
     // sortBy、sortOrder、itemsPerPage、page、search是前端送過來的
@@ -106,7 +106,7 @@ export const getAll = async (req, res) => {
   }
 }
 
-// 編輯商品---------------------------------------------------------------------
+// 編輯商品 for 管理員---------------------------------------------------------------------
 export const edit = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
@@ -151,16 +151,23 @@ export const edit = async (req, res) => {
   }
 }
 
+// 查全部商品-------------------------------------------------------------------
 export const get = async (req, res) => {
   try {
+    // sortBy、sortOrder、itemsPerPage、page、search是前端送過來的
+    // || 表示如果有前面的值則帶入前面的值
+    // 若前面的值為null、undefined、0、NaN、空字符串 '' 或 false，則帶入後面的值
     const sortBy = req.query.sortBy || 'createdAt'
     const sortOrder = req.query.sortOrder || 'desc'
+    // req.query收到的都是文字，所以要*1轉成數字
     const itemsPerPage = req.query.itemsPerPage * 1 || 10
     const page = req.query.page * 1 || 1
+    // 正則表達式
     const regex = new RegExp(req.query.search || '', 'i')
 
     const data = await Product
       .find({
+        // 顯示有上架的商品
         sell: true,
         $or: [
           { name: regex },
@@ -195,6 +202,7 @@ export const get = async (req, res) => {
   }
 }
 
+// 查單個商品--------------------------------------------------------------------
 export const getId = async (req, res) => {
   try {
     if (!validator.isMongoId(req.params.id)) throw new Error('ID')
@@ -203,7 +211,7 @@ export const getId = async (req, res) => {
 
     res.status(StatusCodes.OK).json({
       success: true,
-      message: '',
+      message: '成功查單個商品-controller',
       result
     })
   } catch (error) {

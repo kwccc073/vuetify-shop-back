@@ -13,7 +13,7 @@ router.post('/', auth.jwt, admin, upload, create)
 // 一般人（只看得到有上架的）
 router.get('/', get)
 // 管理員（有無上架都看的到）：要登入、且是管理員
-// /all一定要在:id前面，不然會被當作id
+// /all一定要在:id前面，不然all會被當作id
 router.get('/all', auth.jwt, admin, getAll)
 // 編輯商品----------------------------------------
 // /:id => 指定id的商品
