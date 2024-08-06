@@ -78,7 +78,7 @@ app.use(mongoSanitize()) // 資安功能
 // 最終路徑為http://localhost:4000/user/routeUser裡的路徑
 app.use('/user', routeUser)
 app.use('/product', routeProduct)
-app.use('/order', routeOrder)
+app.use('/order', routeOrder) // 訂單
 
 app.all('*', (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({

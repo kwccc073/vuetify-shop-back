@@ -15,9 +15,10 @@ router.get('/', get)
 // 管理員（有無上架都看的到）：要登入、且是管理員
 // /all一定要在:id前面，不然all會被當作id
 router.get('/all', auth.jwt, admin, getAll)
-// 編輯商品----------------------------------------
-// /:id => 指定id的商品
+
+// 取得指定id的商品 /:id
 router.get('/:id', getId)
+// 編輯商品----------------------------------------
 router.patch('/:id', auth.jwt, admin, upload, edit)
 
 export default router

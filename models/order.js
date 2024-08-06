@@ -1,3 +1,4 @@
+// 要做關聯就需要ObjectId
 import { Schema, model, ObjectId } from 'mongoose'
 
 const cartSchema = new Schema({
@@ -13,11 +14,12 @@ const cartSchema = new Schema({
   }
 })
 
+// 主體-----------------------------------------
 const schema = new Schema({
   user: {
     type: ObjectId,
     ref: 'users',
-    required: [true, '訂單使用者必填']
+    required: [true, '訂單使用者必填-models order.js']
   },
   cart: {
     type: [cartSchema],
@@ -25,7 +27,7 @@ const schema = new Schema({
       validator (value) {
         return value.length > 0
       },
-      message: '訂單購物車必填'
+      message: '訂單購物車必填-models order.js'
     }
   }
 }, {

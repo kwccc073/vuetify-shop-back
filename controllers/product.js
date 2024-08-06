@@ -151,7 +151,7 @@ export const edit = async (req, res) => {
   }
 }
 
-// 查全部商品-------------------------------------------------------------------
+// 查全部商品 for 一般使用者-------------------------------------------------------------------
 export const get = async (req, res) => {
   try {
     // sortBy、sortOrder、itemsPerPage、page、search是前端送過來的

@@ -5,8 +5,10 @@ import UserRole from '../enums/UserRole.js'
 
 // 購物車-----------------------------------------------------------------------
 const cartSchema = Schema({
+  //  外來鍵 Foreign Key (FK)，用來存放來別張資料表的資料主鍵
   p_id: {
     type: ObjectId,
+    // 表示此欄位跟products有連結
     ref: 'products',
     required: [true, '使用者購物車商品必填']
   },

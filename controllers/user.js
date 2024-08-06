@@ -200,19 +200,21 @@ export const editCart = async (req, res) => {
   }
 }
 
-// 取得購物車（一次取出來回給前端）-----------------------------------
+// 取得使用者的購物車內容（一次取出來回給前端）-----------------------------------
 export const getCart = async (req, res) => {
   try {
+    // 要先取得使用者，然後只要找他的購物車欄位('cart')
+    // .populate('要關聯的欄位')用關聯的方式把商品資訊帶入
     const result = await User.findById(req.user._id, 'cart').populate('cart.p_id')
     res.status(StatusCodes.OK).json({
       success: true,
-      message: '',
+      message: '取得購物車成功-controller',
       result: result.cart
     })
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
-      message: '未知錯誤'
+      message: '未知錯誤-controller'
     })
   }
 }
