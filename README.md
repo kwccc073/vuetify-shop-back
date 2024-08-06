@@ -21,3 +21,4 @@
 ## 結帳功能 order
 ### models\order.js （影片03:10:30處）
 ### roures\order.js （影片03:18:48處）
+### controller\order.js （影片03:22:10處）
