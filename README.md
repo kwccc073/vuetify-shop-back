@@ -17,3 +17,7 @@
 ## 查單個&查多個商品 for一般使用者 （影片 00:18:00 處）
 ## 購物車 + 訂單 API （影片 01:56:16 處）－routes\user.js
 ## 取購物車的頁面（影片02:34:52處）－controller\user.js 的 getCart
+
+## 結帳功能 order
+### models\order.js （影片03:10:30處）
+### roures\order.js （影片03:18:48處）
