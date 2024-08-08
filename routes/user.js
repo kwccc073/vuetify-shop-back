@@ -5,6 +5,7 @@ import * as auth from '../middlewares/auth.js'
 
 const router = Router()
 
+// 這裡的路徑是自己定義的，會影響前端的請求
 // 建立帳號-----------------------------------------
 router.post('/', create)
 // 登入要經過auth.login的欄位檢查-------------------
