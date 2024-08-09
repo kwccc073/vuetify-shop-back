@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes'
 import jwt from 'jsonwebtoken'
 import validator from 'validator'
 
+// 建立帳號--------------------------------------------------------------------------
 export const create = async (req, res) => {
   try {
     await User.create(req.body)
@@ -36,6 +37,7 @@ export const create = async (req, res) => {
   }
 }
 
+// 登入----------------------------------------------------------------------------
 export const login = async (req, res) => {
   try {
     const token = jwt.sign({ _id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '7 days' })
@@ -60,7 +62,7 @@ export const login = async (req, res) => {
   }
 }
 
-// 舊換新-----------------------------------------------------------------------------------------
+// 舊換新--------------------------------------------------------------------------
 export const extend = async (req, res) => {
   try {
     // 先找索引，找到的token是否等於現在的token
