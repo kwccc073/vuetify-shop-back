@@ -131,7 +131,7 @@ export const logout = async (req, res) => {
 
 // 購物車-----------------------------------------------------------------------------------
 // 編輯購物車--------------------------------------
-// 一次會回傳兩個東西進來：要加入的商品 id 及數量（相對值，後端去修改）
+// 一次會回傳兩個東西進來：要加入的商品 id 、數量（相對值，後端去修改）
 export const editCart = async (req, res) => {
   try {
     // 先檢查傳入的商品 id 對不對
@@ -139,6 +139,7 @@ export const editCart = async (req, res) => {
 
     // 尋找購物車內是否有傳入的這個商品id：若有 => 改數量、沒有 => 新增
     // 這個req會包含使用者的資訊
+    // item.p_id會是MongoDB的格式，需要toString()才能和req.body.product比較
     const idx = req.user.cart.findIndex(item => item.p_id.toString() === req.body.product)
     // idx > -1表示購物車內有這個商品
     if (idx > -1) {
@@ -205,8 +206,8 @@ export const editCart = async (req, res) => {
 // 取得使用者的購物車內容（一次取出來回給前端）-----------------------------------
 export const getCart = async (req, res) => {
   try {
-    // 要先取得使用者，然後只要找他的購物車欄位('cart')
-    // .populate('要關聯的欄位')用關聯的方式把商品資訊帶入
+    // 要先找到使用者，然後只取得他的購物車欄位('cart')
+    // 再使用 Mongoose 的 .populate() 方法來填充 cart 中的 p_id 欄位（把商品資訊帶入）
     const result = await User.findById(req.user._id, 'cart').populate('cart.p_id')
     res.status(StatusCodes.OK).json({
       success: true,
